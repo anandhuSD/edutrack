@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Add Questions - EduTrack2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-950: #0A1B33;
+            --navy-800: #13315C;
+            --navy-700: #1D4076;
+            --gold: #C9A227;
+            --gold-light: #E4C766;
+            --paper: #EDE1D3;
+            --card: #FBF7F0;
+            --ink: #1B2430;
+            --muted: #6B7280;
+            --error: #B3261E;
+            --success: #2E7D46;
+            --hairline: rgba(10, 27, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .topbar {
+            background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 14px rgba(10,27,51,0.25);
+        }
+
+        .wordmark {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.01em;
+            color: #FBF7F0;
+            margin: 0;
+        }
+
+        .wordmark span { color: var(--gold); }
+
+        .admin-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy-950);
+            background: var(--gold-light);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        main {
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 48px 24px 60px;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--navy-950);
+            margin: 0 0 10px;
+        }
+
+        .progress-note {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 26px;
+        }
+
+        .progress-count {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--navy-950);
+            background: var(--gold-light);
+            padding: 4px 12px;
+            border-radius: 999px;
+        }
+
+        .progress-note span.label {
+            font-size: 13.5px;
+            color: var(--muted);
+        }
+
+        .form-card {
+            background: var(--card);
+            border: 1px solid var(--hairline);
+            border-radius: 18px;
+            padding: 30px 32px;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 16px 32px -20px rgba(10,27,51,0.25);
+            margin-bottom: 24px;
+        }
+
+        .field { margin-bottom: 20px; }
+
+        .field label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--navy-800);
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+        }
+
+        .option-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .field select {
+            width: 100%;
+            padding: 12px 16px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            outline: none;
+            appearance: none;
+            background-image: linear-gradient(45deg, transparent 50%, var(--navy-700) 50%), linear-gradient(135deg, var(--navy-700) 50%, transparent 50%);
+            background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+            background-size: 5px 5px, 5px 5px;
+            background-repeat: no-repeat;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+        }
+
+        button.btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 4px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(180deg, var(--navy-700), var(--navy-950));
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -8px rgba(10, 27, 51, 0.55);
+            transition: filter 0.15s ease, transform 0.05s ease;
+        }
+
+        button.btn:hover { filter: brightness(1.08); }
+        button.btn:active { transform: translateY(1px); }
+        button.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--success);
+            text-decoration: none;
+        }
+
+        .back-link:hover { color: var(--navy-950); }
+
+        @media (max-width: 560px) {
+            .topbar { padding: 18px 20px; }
+            main { padding: 36px 18px 48px; }
+            .form-card { padding: 24px 20px; }
+            .option-row { grid-template-columns: 1fr; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <p class="wordmark">Edu<span>Track2</span></p>
+        <span class="admin-tag">Admin</span>
+    </div>
+
+    <main>
+        <p class="eyebrow">Admin · Building Test</p>
+        <h1 th:text="${test.testName}"></h1>
+        <div class="progress-note">
+            <span class="progress-count" th:text="${test.questions.size()}"></span>
+            <span class="label">question(s) added so far</span>
+        </div>
+
+        <div class="form-card">
+            <form th:action="@{'/admin/tests/' + ${test.id} + '/questions'}" method="post">
+                <div class="field">
+                    <label for="questionText">Question</label>
+                    <input type="text" id="questionText" name="questionText" placeholder="Type the question" required />
+                </div>
+
+                <div class="option-row">
+                    <div class="field">
+                        <label for="optionA">Option A</label>
+                        <input type="text" id="optionA" name="optionA" required />
+                    </div>
+                    <div class="field">
+                        <label for="optionB">Option B</label>
+                        <input type="text" id="optionB" name="optionB" required />
+                    </div>
+                    <div class="field">
+                        <label for="optionC">Option C</label>
+                        <input type="text" id="optionC" name="optionC" required />
+                    </div>
+                    <div class="field">
+                        <label for="optionD">Option D</label>
+                        <input type="text" id="optionD" name="optionD" required />
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="correctOption">Correct Option</label>
+                    <select id="correctOption" name="correctOption" required>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn">Add Question</button>
+            </form>
+        </div>
+
+        <a href="/admin/tests" class="back-link">✓ Finish — back to test list</a>
+    </main>
+</body>
+</html>

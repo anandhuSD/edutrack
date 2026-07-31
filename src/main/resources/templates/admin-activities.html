@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Activities - EduTrack2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-950: #0A1B33;
+            --navy-800: #13315C;
+            --navy-700: #1D4076;
+            --gold: #C9A227;
+            --gold-light: #E4C766;
+            --paper: #EDE1D3;
+            --card: #FBF7F0;
+            --ink: #1B2430;
+            --muted: #6B7280;
+            --error: #B3261E;
+            --success: #2E7D46;
+            --hairline: rgba(10, 27, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .topbar {
+            background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 14px rgba(10,27,51,0.25);
+        }
+
+        .wordmark {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.01em;
+            color: #FBF7F0;
+            margin: 0;
+        }
+
+        .wordmark span { color: var(--gold); }
+
+        .admin-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy-950);
+            background: var(--gold-light);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        main {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 48px 24px 60px;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--navy-950);
+            margin: 0 0 26px;
+        }
+
+        .compose-card {
+            background: var(--card);
+            border: 1px solid var(--hairline);
+            border-radius: 18px;
+            padding: 28px 30px;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 16px 32px -20px rgba(10,27,51,0.25);
+            margin-bottom: 40px;
+        }
+
+        .field { margin-bottom: 20px; }
+
+        .field:last-of-type { margin-bottom: 24px; }
+
+        .field label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--navy-800);
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+        }
+
+        button.btn {
+            width: 100%;
+            padding: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(180deg, var(--navy-700), var(--navy-950));
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -8px rgba(10, 27, 51, 0.55);
+            transition: filter 0.15s ease, transform 0.05s ease;
+        }
+
+        button.btn:hover { filter: brightness(1.08); }
+        button.btn:active { transform: translateY(1px); }
+        button.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        .section-label {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin: 0 0 16px;
+        }
+
+        .activity-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .activity-card {
+            display: flex;
+            gap: 16px;
+            background: var(--card);
+            border: 1px solid var(--hairline);
+            border-radius: 16px;
+            padding: 18px 22px;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 12px 24px -16px rgba(10,27,51,0.25);
+        }
+
+        .activity-badge {
+            flex: 0 0 auto;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: linear-gradient(160deg, var(--navy-800), var(--navy-950));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .activity-text { min-width: 0; }
+
+        .activity-title {
+            display: block;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--navy-950);
+        }
+
+        .activity-desc {
+            margin: 5px 0 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--muted);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 32px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy-700);
+            text-decoration: none;
+        }
+
+        .back-link:hover { color: var(--gold); }
+
+        @media (max-width: 560px) {
+            .topbar { padding: 18px 20px; }
+            main { padding: 36px 18px 48px; }
+            .compose-card { padding: 22px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <p class="wordmark">Edu<span>Track2</span></p>
+        <span class="admin-tag">Admin</span>
+    </div>
+
+    <main>
+        <p class="eyebrow">Admin · Activities</p>
+        <h1>Add an Activity</h1>
+
+        <div class="compose-card">
+            <form action="/admin/activities" method="post">
+                <div class="field">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="e.g. Group project submission" required />
+                </div>
+                <div class="field">
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" placeholder="Describe the activity" required />
+                </div>
+                <button type="submit" class="btn">Add</button>
+            </form>
+        </div>
+
+        <p class="section-label">Current Activities</p>
+        <div class="activity-list">
+            <div class="activity-card" th:each="a : ${activities}">
+                <div class="activity-badge">📚</div>
+                <div class="activity-text">
+                    <strong class="activity-title" th:text="${a.title}"></strong>
+                    <p class="activity-desc" th:text="${a.description}"></p>
+                </div>
+            </div>
+        </div>
+
+        <a href="/admin/dashboard" class="back-link">← Back to Admin Dashboard</a>
+    </main>
+</body>
+</html>

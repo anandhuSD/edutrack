@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>New Test - EduTrack2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-950: #0A1B33;
+            --navy-800: #13315C;
+            --navy-700: #1D4076;
+            --gold: #C9A227;
+            --gold-light: #E4C766;
+            --paper: #EDE1D3;
+            --card: #FBF7F0;
+            --ink: #1B2430;
+            --muted: #6B7280;
+            --error: #B3261E;
+            --success: #2E7D46;
+            --hairline: rgba(10, 27, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 20px;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .auth-card {
+            position: relative;
+            width: 100%;
+            max-width: 440px;
+            background: var(--card);
+            border-radius: 24px;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.06), 0 30px 60px -24px rgba(10,27,51,0.35);
+            padding: 44px 40px 36px;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--navy-800), var(--gold));
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--navy-950);
+            margin: 0 0 30px;
+        }
+
+        .field { margin-bottom: 26px; }
+
+        .field label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--navy-800);
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field input::placeholder { color: #9AA3AF; }
+
+        .field input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+        }
+
+        button.btn {
+            width: 100%;
+            padding: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(180deg, var(--navy-700), var(--navy-950));
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -8px rgba(10, 27, 51, 0.55);
+            transition: filter 0.15s ease, transform 0.05s ease;
+        }
+
+        button.btn:hover { filter: brightness(1.08); }
+        button.btn:active { transform: translateY(1px); }
+        button.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        .switch-line {
+            margin: 22px 0 0;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .switch-line a {
+            color: var(--navy-700);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .switch-line a:hover { color: var(--gold); }
+
+        @media (max-width: 480px) {
+            .auth-card { padding: 36px 26px 30px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-card">
+        <p class="eyebrow">Admin · New Exam</p>
+        <h1>Create Test</h1>
+
+        <form action="/admin/tests/new" method="post">
+            <div class="field">
+                <label for="testName">Test Name</label>
+                <input type="text" id="testName" name="testName" placeholder="e.g. Java Basics Quiz" required />
+            </div>
+            <button type="submit" class="btn">Create &amp; Add Questions</button>
+        </form>
+
+        <p class="switch-line"><a href="/admin/tests">← Back to test list</a></p>
+    </div>
+</body>
+</html>

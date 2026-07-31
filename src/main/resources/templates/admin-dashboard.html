@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard - EduTrack2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-950: #0A1B33;
+            --navy-800: #13315C;
+            --navy-700: #1D4076;
+            --gold: #C9A227;
+            --gold-light: #E4C766;
+            --paper: #EDE1D3;
+            --card: #FBF7F0;
+            --ink: #1B2430;
+            --muted: #6B7280;
+            --error: #B3261E;
+            --success: #2E7D46;
+            --hairline: rgba(10, 27, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .topbar {
+            background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+            padding: 22px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 14px rgba(10,27,51,0.25);
+        }
+
+        .wordmark {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            letter-spacing: -0.01em;
+            color: #FBF7F0;
+            margin: 0;
+        }
+
+        .wordmark span { color: var(--gold); }
+
+        .admin-tag {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--navy-950);
+            background: var(--gold-light);
+            padding: 5px 12px;
+            border-radius: 999px;
+        }
+
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 48px 32px 60px;
+        }
+
+        .dash-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin: 0 0 8px;
+        }
+
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 26px;
+            color: var(--navy-950);
+            margin: 0;
+        }
+
+        .logout-link {
+            font-family: 'Inter', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--navy-800);
+            text-decoration: none;
+            padding: 9px 18px;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            transition: all 0.15s ease;
+        }
+
+        .logout-link:hover {
+            color: #fff;
+            background: var(--error);
+            border-color: var(--error);
+        }
+
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .subject-card {
+            position: relative;
+            display: block;
+            background: var(--card);
+            border: 1px solid var(--hairline);
+            border-radius: 20px;
+            padding: 28px 26px 26px;
+            text-decoration: none;
+            color: var(--ink);
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 16px 32px -18px rgba(10,27,51,0.25);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .subject-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--subject-color, var(--gold));
+        }
+
+        .subject-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 1px 2px rgba(10,27,51,0.06), 0 24px 40px -18px rgba(10,27,51,0.35);
+        }
+
+        .subject-card .code {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--subject-color, var(--gold));
+            margin: 0 0 14px;
+        }
+
+        .subject-card h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--navy-950);
+            margin: 0 0 8px;
+        }
+
+        .subject-card .desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .seal {
+            position: absolute;
+            bottom: -22px;
+            right: -22px;
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 1.5px dashed var(--subject-color, var(--gold));
+            opacity: 0.3;
+        }
+
+        @media (max-width: 820px) {
+            .subject-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 560px) {
+            .topbar { padding: 18px 20px; }
+            main { padding: 36px 20px 48px; }
+            .subject-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <p class="wordmark">Edu<span>Track2</span></p>
+        <span class="admin-tag">Admin</span>
+    </div>
+
+    <main>
+        <div class="dash-head">
+            <div>
+                <p class="eyebrow">Admin Panel</p>
+                <h1>Manage EduTrack2</h1>
+            </div>
+            <a class="logout-link" href="/admin/logout">Logout</a>
+        </div>
+
+        <div class="subject-grid">
+            <a class="subject-card" href="/admin/tests" style="--subject-color:#C6862B">
+                <p class="code">EXAMS</p>
+                <h2>Add Exam</h2>
+                <p class="desc">Create tests and MCQ questions</p>
+                <div class="seal"></div>
+            </a>
+            <a class="subject-card" href="/admin/notifications" style="--subject-color:#2F7D57">
+                <p class="code">NOTIFY</p>
+                <h2>Add Notifications</h2>
+                <p class="desc">Post updates for students</p>
+                <div class="seal"></div>
+            </a>
+            <a class="subject-card" href="/admin/activities" style="--subject-color:#B23A2E">
+                <p class="code">TASKS</p>
+                <h2>Add Activities</h2>
+                <p class="desc">Assign activities to students</p>
+                <div class="seal"></div>
+            </a>
+        </div>
+    </main>
+</body>
+</html>

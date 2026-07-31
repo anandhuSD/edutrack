@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Login - EduTrack2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy-950: #0A1B33;
+            --navy-800: #13315C;
+            --navy-700: #1D4076;
+            --gold: #C9A227;
+            --gold-light: #E4C766;
+            --paper: #EDE1D3;
+            --card: #FBF7F0;
+            --ink: #1B2430;
+            --muted: #6B7280;
+            --error: #B3261E;
+            --success: #2E7D46;
+            --hairline: rgba(10, 27, 51, 0.14);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 32px 20px;
+            font-family: 'Inter', sans-serif;
+            color: var(--ink);
+            background: var(--paper);
+        }
+
+        .auth {
+            width: 100%;
+            max-width: 920px;
+            min-height: 560px;
+            background: var(--card);
+            border-radius: 28px;
+            box-shadow: 0 1px 2px rgba(10,27,51,0.06), 0 30px 60px -20px rgba(10,27,51,0.35);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ---------- Left: admin panel ---------- */
+        .visual {
+            position: relative;
+            flex: 0 0 46%;
+            background: linear-gradient(160deg, var(--navy-950), var(--navy-800));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .dots {
+            position: absolute;
+            width: 92px;
+            height: 92px;
+            background-image: radial-gradient(rgba(228, 199, 102, 0.45) 1.6px, transparent 1.6px);
+            background-size: 15px 15px;
+        }
+
+        .dots.top-left { top: 24px; left: 24px; }
+        .dots.top-right { top: 24px; right: 24px; }
+
+        .admin-icon {
+            position: relative;
+            z-index: 1;
+            width: 92px;
+            height: 92px;
+            border-radius: 24px;
+            background: rgba(228, 199, 102, 0.12);
+            border: 1.5px solid rgba(228, 199, 102, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 24px;
+        }
+
+        .visual-title {
+            position: relative;
+            z-index: 1;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: #FBF7F0;
+            margin: 0 0 10px;
+        }
+
+        .visual-sub {
+            position: relative;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            line-height: 1.6;
+            color: rgba(251, 247, 240, 0.65);
+            max-width: 260px;
+            margin: 0;
+        }
+
+        .dock {
+            position: absolute;
+            bottom: 26px;
+            left: 32px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dock .pill-sm {
+            width: 26px;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(196, 205, 232, 0.55);
+        }
+
+        .dock .pill-lg {
+            width: 130px;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(196, 205, 232, 0.35);
+        }
+
+        /* ---------- Right: form panel ---------- */
+        .form-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 48px 56px;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin: 0 0 10px;
+        }
+
+        .wordmark {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            letter-spacing: -0.01em;
+            color: var(--navy-950);
+            margin: 0 0 6px;
+        }
+
+        .wordmark span { color: var(--gold); }
+
+        .tagline {
+            font-size: 13.5px;
+            color: var(--muted);
+            margin: 0 0 26px;
+        }
+
+        .alert {
+            font-size: 13px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            margin: 0 0 18px;
+            border: 1px solid transparent;
+        }
+
+        .alert-error {
+            color: var(--error);
+            background: rgba(179, 38, 30, 0.07);
+            border-color: rgba(179, 38, 30, 0.22);
+        }
+
+        .field { margin-bottom: 22px; }
+
+        .field label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            color: var(--navy-800);
+            margin-bottom: 8px;
+        }
+
+        .field input {
+            width: 100%;
+            padding: 13px 18px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14.5px;
+            color: var(--ink);
+            background: #fff;
+            border: 1px solid var(--hairline);
+            border-radius: 999px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .field input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.18);
+        }
+
+        button.btn {
+            width: 100%;
+            padding: 14px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(180deg, var(--navy-700), var(--navy-950));
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px -8px rgba(10, 27, 51, 0.55);
+            transition: filter 0.15s ease, transform 0.05s ease;
+        }
+
+        button.btn:hover { filter: brightness(1.08); }
+        button.btn:active { transform: translateY(1px); }
+        button.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+        .switch-line {
+            margin: 24px 0 0;
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .switch-line a {
+            color: var(--navy-800);
+            font-weight: 600;
+            text-decoration: none;
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .switch-line a:hover { color: var(--navy-950); }
+
+        @media (max-width: 720px) {
+            .auth { flex-direction: column; min-height: 0; border-radius: 20px; }
+            .visual { flex: 0 0 auto; padding: 32px; }
+            .admin-icon { width: 72px; height: 72px; font-size: 32px; margin-bottom: 18px; }
+            .visual-sub { display: none; }
+            .form-panel { padding: 36px 28px 40px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            button.btn { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth">
+        <div class="visual">
+            <span class="dots top-left"></span>
+            <span class="dots top-right"></span>
+
+            <div class="admin-icon">🛡️</div>
+            <p class="visual-title">Admin Control Panel</p>
+            <p class="visual-sub">Manage exams, notifications, and student activities from one place.</p>
+
+            <div class="dock">
+                <span class="pill-sm"></span>
+                <span class="pill-lg"></span>
+            </div>
+        </div>
+
+        <div class="form-panel">
+            <p class="eyebrow">Admin Access</p>
+            <p class="wordmark">Edu<span>Track2</span></p>
+            <p class="tagline">Manage exams, notifications &amp; activities</p>
+
+            <p th:if="${error}" class="alert alert-error" th:text="${error}"></p>
+
+            <form action="/admin/login" method="post">
+                <div class="field">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter admin username" required />
+                </div>
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter admin password" required />
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+
+            <p class="switch-line"><a href="/login">Back to student login</a></p>
+        </div>
+    </div>
+</body>
+</html>
